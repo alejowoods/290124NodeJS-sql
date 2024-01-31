@@ -9,6 +9,8 @@ export const userValidation = [
     body('age').isInt({ min: 1 }), // en esta linea de codigo estamos validando que la edad del usuario sea un numero entero y que sea mayor a 0.
 ];
 
+
+
 export const getUsers = async (req, res) => {
     try {
         const {rows} = await pool.query('SELECT * FROM users');
