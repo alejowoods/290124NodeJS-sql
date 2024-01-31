@@ -46,6 +46,7 @@ export const editOrder = async (req, res) => {
         const {price} = req.body;
         const {rows} = await pool.query('UPDATE orders SET price=$1 WHERE id=$2 RETURNING *', [price, id])
         console.log('hi' + rows)
+        res.status(200).json(rows[0]);
     } catch (error) {
         res.status(500)
     }
@@ -57,6 +58,19 @@ export const deleteOrder = async (req, res) => {
         const {rows} = await pool.query('DELETE FROM orders WHERE id=$1 RETURNING *', [id]);
         console.log('You are going to delete something, mate' + rows)
         res.status(200).json(rows[0]) // .status es un metodo que nos permite enviar un status al cliente. 
+        // res.status(200).json(rows[0]) es la respuesta que le vamos a dar al cliente. rows es el resultado de la consulta. json es un metodo que convierte el resultado en un json.
+        // res.status(200).json(rows[0]) significa que la peticion fue exitosa. Es básicamente la copia de lo que sucede en la base de datos.
+    } catch (error) {
+        res.status(500)
+    }
+};
+
+export const getAllOrdersOfUser = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const {rows} = await pool.query('SELECT * FROM orders WHERE user_id=$1', [id]); // !! importante
+        console.log('Check all orders of a user, mate' + JSON.stringify(rows))
+        res.status(200).json(rows)
     } catch (error) {
         res.status(500)
     }
