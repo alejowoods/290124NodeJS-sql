@@ -49,5 +49,15 @@ export const editOrder = async (req, res) => {
     } catch (error) {
         res.status(500)
     }
+};
 
+export const deleteOrder = async (req, res) => {
+    const {id} = req.params;
+    try {
+        const {rows} = await pool.query('DELETE FROM orders WHERE id=$1 RETURNING *', [id]);
+        console.log('You are going to delete something, mate' + rows)
+        res.status(200).json(rows[0]) // .status es un metodo que nos permite enviar un status al cliente. 
+    } catch (error) {
+        res.status(500)
+    }
 };
